@@ -11,3 +11,7 @@ router.get('/course', function (req, res) {
 router.get('/grades', function (req, res) {
   res.send('Grades route');
 });
+
+router.get('/', function (req, res) {
+  res.send('Default view');
+});
