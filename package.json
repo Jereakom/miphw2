@@ -1,9 +1,10 @@
 {
   "name": "miphw2",
-  "version": "1.0.0",
+  "version": "4.5.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node router.js", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
