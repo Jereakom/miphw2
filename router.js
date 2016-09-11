@@ -15,3 +15,5 @@ router.get('/grades', function (req, res) {
 router.get('/', function (req, res) {
   res.send('Default view');
 });
+
+router.listen(80);
