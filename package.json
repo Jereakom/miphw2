@@ -1,15 +1,18 @@
 {
   "name": "miphw2",
-  "version": "4.5.0",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node router.js", 
+    "start": "node router.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0"
+  },
+  "engines": {
+    "node": "4.5.0"
   }
 }
