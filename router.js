@@ -121,7 +121,7 @@ router.post('/course/:id/:description/:name', function (req, res) {
   var courseData = JSON.stringify(
     {
         "id": req.params.id,
-        "description": req.params.address,
+        "description": req.params.description,
         "name": req.params.name
     }
   );
