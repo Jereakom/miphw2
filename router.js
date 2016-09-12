@@ -18,6 +18,8 @@ router.get('/student', function (req, res) {
   res.send('Student route');
 });
 
+// get
+
 router.get('/student/:id', function (req, res) {
   var check = req.cookies[req.params.id];
 
@@ -27,10 +29,11 @@ router.get('/student/:id', function (req, res) {
     return;
   }
 
-  var asd = req.params.id;
-  uri = req.cookies[asd];
+  uri = req.cookies[req.params.if];
   res.send(uri);
 });
+
+// post
 
 router.post('/student/:id/:name/:address/:Class', function (req, res) {
   var check = req.cookies[req.params.id] ;
@@ -49,8 +52,10 @@ router.post('/student/:id/:name/:address/:Class', function (req, res) {
         "Class": req.params.Class
     }
   );
-  res.cookie(req.params.id, studentData).send('Student saved with the id of ' + req.params.id);
+  res.cookie(req.params.id, studentData, { path: '/student'}).send('Student saved with the id of ' + req.params.id);
 });
+
+// put
 
 router.put('/student/:id/:name/:address/:Class', function (req, res) {
   var check = req.cookies[req.params.id];
@@ -69,8 +74,10 @@ router.put('/student/:id/:name/:address/:Class', function (req, res) {
         "Class": req.params.Class
     }
   );
-  res.cookie(req.params.id, updateData).send('Data of student with the id of ' + req.params.id + ' updated!');
+  res.cookie(req.params.id, updateData, { path: '/student'}).send('Data of student with the id of ' + req.params.id + ' updated!');
 });
+
+// delete
 
 router.delete('/student/:id', function (req, res) {
   var check = req.cookies[req.params.id];
@@ -79,26 +86,80 @@ router.delete('/student/:id', function (req, res) {
     res.send("No student found");
     return;
   }
-  res.clearCookie(req.params.id);
+  res.clearCookie(req.params.id, {path:'/student'});
   res.send("The student with the id of "+ req.params.id +" has been removed!");
 });
 
 // Course routes
 
-router.get('/course', function (req, res) {
-  res.send('Course route');
+// get
+
+router.get('/course/:id', function (req, res) {
+  var check = req.cookies[req.params.id];
+
+  if (check === undefined)
+  {
+    res.send("No course found");
+    return;
+  }
+
+  uri = req.cookies[req.params.id];
+  res.send(uri);
 });
 
-router.post('/course/:id/:description/:id', function (req, res) {
-  res.send(req.params);
+// post
+
+router.post('/course/:id/:description/:name', function (req, res) {
+  var check = req.cookies[req.params.id] ;
+
+  if (check)
+  {
+    res.send("Trying to update course info, please use a put request instead");
+    return;
+  }
+
+  var courseData = JSON.stringify(
+    {
+        "id": req.params.id,
+        "description": req.params.address,
+        "name": req.params.name
+    }
+  );
+  res.cookie(req.params.id, courseData, { path: '/course'}).send('Course saved with the id of ' + req.params.id);
 });
 
-router.put('/course/:id/:description/:id', function (req, res) {
-  res.send(req.params);
+// put
+
+router.put('/course/:id/:description/:name', function (req, res) {
+  var check = req.cookies[req.params.id];
+
+  if (!check)
+  {
+    res.send("Trying to create a course, please use a post request instead");
+    return;
+  }
+
+  var updateData = JSON.stringify(
+    {
+        "id": req.params.id,
+        "description": req.params.description,
+        "name": req.params.name
+    }
+  );
+  res.cookie(req.params.id, updateData, { path: '/course'}).send('Data of course with the id of ' + req.params.id + ' updated!');
 });
+
+// delete
 
 router.delete('/course/:id', function (req, res) {
-  res.send(req.params);
+  var check = req.cookies[req.params.id];
+  if (check === undefined)
+  {
+    res.send("No course found");
+    return;
+  }
+  res.clearCookie(req.params.id, {path:'/course'});
+  res.send("The course with the id of "+ req.params.id +" has been removed!");
 });
 
 // Grade routes
