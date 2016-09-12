@@ -229,7 +229,7 @@ router.put('/grades/:id/:studentID/:courseID/:grade', function (req, res) {
 
 // delete
 
-router.delete('/grades/:studentID/:courseID/', function (req, res) {
+router.delete('/grades/:id/', function (req, res) {
   var check = req.cookies[req.params.id];
   if (check === undefined)
   {
