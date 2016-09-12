@@ -237,7 +237,7 @@ router.delete('/grades/:id/', function (req, res) {
     return;
   }
   res.clearCookie(req.params.id, {path:'/grades'});
-  res.send("The grade of student "+ req.params.studentID +" for the course "+ req.params.studentID +" has been removed!");
+  res.send("The grade entry "+ req.params.id +" has been removed!");
 });
 
 // Default route
