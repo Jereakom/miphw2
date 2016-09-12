@@ -29,7 +29,7 @@ router.get('/student/:id', function (req, res) {
     return;
   }
 
-  uri = req.cookies[req.params.if];
+  uri = req.cookies[req.params.id];
   res.send(uri);
 });
 
