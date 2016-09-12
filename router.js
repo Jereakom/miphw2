@@ -164,20 +164,80 @@ router.delete('/course/:id', function (req, res) {
 
 // Grade routes
 
-router.get('/grades/:studentID/:courseID/:grade', function (req, res) {
-  res.send(req.params);;
+// get
+
+router.get('/grades/:id/', function (req, res) {
+
+  var check = req.cookies[req.params.id];
+
+  if (check === undefined)
+  {
+    res.send("No grade information found");
+    return;
+  }
+
+  uri = req.cookies[req.params.id];
+  res.send(uri);
+
 });
 
-router.post('/grades/:studentID/:courseID/:grade', function (req, res) {
-  res.send(req.params);
+// post
+
+router.post('/grades/:id/:studentID/:courseID/:grade', function (req, res) {
+
+  var check = req.cookies[req.params.id] ;
+
+  if (check)
+  {
+    res.send("Trying to update a grade entry, please use a put request instead");
+    return;
+  }
+
+  var gradeData = JSON.stringify(
+    {
+      "id": req.params.id,
+      "studentID": req.params.studentID,
+      "courseID": req.params.courseID,
+      "grade": req.params.grade
+    }
+  );
+  res.cookie(req.params.id, gradeData, { path: '/grades'}).send('Grade for student '+ req.params.studentID +' saved with the id of ' + req.params.id);
+
 });
 
-router.put('/grades/:studentID/:courseID/:grade', function (req, res) {
-  res.send(req.params);
+// put
+
+router.put('/grades/:id/:studentID/:courseID/:grade', function (req, res) {
+  var check = req.cookies[req.params.id];
+
+  if (!check)
+  {
+    res.send("Trying to create a grade entry, please use a post request instead");
+    return;
+  }
+
+  var updateGrade = JSON.stringify(
+    {
+        "id": req.params.id,
+        "studentID": req.params.studentID,
+        "courseID": req.params.courseID,
+        "grade": req.params.grade
+    }
+  );
+  res.cookie(req.params.id, updateGrade, { path: '/grades'}).send('The grade of student with the id of ' + req.params.studentID + ' for the course '+ req.params.courseID +' updated!');
 });
+
+// delete
 
 router.delete('/grades/:studentID/:courseID/', function (req, res) {
-  res.send(req.params);
+  var check = req.cookies[req.params.id];
+  if (check === undefined)
+  {
+    res.send("No grade information found");
+    return;
+  }
+  res.clearCookie(req.params.id, {path:'/grades'});
+  res.send("The grade of student "+ req.params.studentID +" for the course "+ req.params.studentID +" has been removed!");
 });
 
 // Default route
