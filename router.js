@@ -19,13 +19,29 @@ router.get('/student', function (req, res) {
 });
 
 router.get('/student/:id', function (req, res) {
+  var check = req.cookies[req.params.id];
+
+  if (check === undefined)
+  {
+    res.send("No student found");
+    return;
+  }
+
   var asd = req.params.id;
   uri = req.cookies[asd];
   res.send(uri);
 });
 
 router.post('/student/:id/:name/:address/:Class', function (req, res) {
-  var studentdata = JSON.stringify(
+  var check = req.cookies[req.params.id] ;
+
+  if (check)
+  {
+    res.send("Trying to update a student's info, please use a put request instead");
+    return;
+  }
+
+  var studentData = JSON.stringify(
     {
         "id": req.params.id,
         "name": req.params.name,
@@ -33,11 +49,27 @@ router.post('/student/:id/:name/:address/:Class', function (req, res) {
         "Class": req.params.Class
     }
   );
-  res.cookie(req.params.id, studentdata).send('Student saved with the id of ' + req.params.id);
+  res.cookie(req.params.id, studentData).send('Student saved with the id of ' + req.params.id);
 });
 
-router.put('/student/:id/:name/:address/:class', function (req, res) {
-  res.send(req.params);
+router.put('/student/:id/:name/:address/:Class', function (req, res) {
+  var check = req.cookies[req.params.id];
+
+  if (!check)
+  {
+    res.send("Trying to create a new student, please use a post request instead");
+    return;
+  }
+
+  var updateData = JSON.stringify(
+    {
+        "id": req.params.id,
+        "name": req.params.name,
+        "address": req.params.address,
+        "Class": req.params.Class
+    }
+  );
+  res.cookie(req.params.id, updateData).send('Data of student with the id of ' + req.params.id + ' updated!');
 });
 
 router.delete('/student/:id', function (req, res) {
